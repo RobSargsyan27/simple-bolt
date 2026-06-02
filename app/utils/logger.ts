@@ -131,14 +131,7 @@ let debugLogger: any = null;
 const getDebugLogger = () => {
   if (!debugLogger && typeof window !== 'undefined') {
     try {
-      // Use dynamic import asynchronously but don't block the function
-      import('./debugLogger')
-        .then(({ debugLogger: loggerInstance }) => {
-          debugLogger = loggerInstance;
-        })
-        .catch(() => {
-          // Debug logger not available, skip integration
-        });
+      // debug logger removed during strip-down
     } catch {
       // Debug logger not available, skip integration
     }

@@ -82,21 +82,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <>
       <ClientOnly>{() => <DndProvider backend={HTML5Backend}>{children}</DndProvider>}</ClientOnly>
       <ToastContainer
-        closeButton={({ closeToast }) => {
-          return (
-            <button className="Toastify__close-button" onClick={closeToast}>
-              <div className="i-ph:x text-lg" />
-            </button>
-          );
-        }}
+        closeButton={({ closeToast }) => (
+          <button className="Toastify__close-button" onClick={closeToast}>
+            <div className="i-ph:x text-lg" />
+          </button>
+        )}
         icon={({ type }) => {
           switch (type) {
-            case 'success': {
+            case 'success':
               return <div className="i-ph:check-bold text-bolt-elements-icon-success text-2xl" />;
-            }
-            case 'error': {
+            case 'error':
               return <div className="i-ph:warning-circle-bold text-bolt-elements-icon-error text-2xl" />;
-            }
           }
 
           return undefined;
@@ -112,38 +108,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-import { logStore } from './lib/stores/logs';
-
 export default function App() {
-  const theme = useStore(themeStore);
-
-  useEffect(() => {
-    logStore.logSystem('Application initialized', {
-      theme,
-      platform: navigator.platform,
-      userAgent: navigator.userAgent,
-      timestamp: new Date().toISOString(),
-    });
-
-    // Initialize debug logging with improved error handling
-    import('./utils/debugLogger')
-      .then(({ debugLogger }) => {
-        /*
-         * The debug logger initializes itself and starts disabled by default
-         * It will only start capturing when enableDebugMode() is called
-         */
-        const status = debugLogger.getStatus();
-        logStore.logSystem('Debug logging ready', {
-          initialized: status.initialized,
-          capturing: status.capturing,
-          enabled: status.enabled,
-        });
-      })
-      .catch((error) => {
-        logStore.logError('Failed to initialize debug logging', error);
-      });
-  }, []);
-
   return (
     <Layout>
       <Outlet />
